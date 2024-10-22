@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React, { forwardRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   "inline-flex items-center justify-center rounded-md whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
@@ -31,10 +31,10 @@ const buttonVariants = cva(
     },
   }
 );
-
+export type TButtonVariants = typeof buttonVariants;
 interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<TButtonVariants> {}
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, children, ...props }, ref) => {
@@ -51,5 +51,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
-
 export default Button;

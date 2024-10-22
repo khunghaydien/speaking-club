@@ -1,6 +1,12 @@
 import clsx from "clsx";
 import React, { forwardRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
+import { ImSpinner2 } from "react-icons/im";
+import { FaPlus } from "react-icons/fa";
+import { GiCoffeeCup } from "react-icons/gi";
+import { MdPrivacyTip } from "react-icons/md";
+import { FaThList } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
 
 const iconVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-full disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
@@ -12,6 +18,7 @@ const iconVariants = cva(
       },
       size: {
         default: "h-9 w-9",
+        none: "",
         xs: "h-6 w-6",
         sm: "h-8 w-8",
         lg: "h-10 w-10 ",
@@ -54,7 +61,7 @@ const withIcon = (Icon: React.ComponentType) => {
   }: {
     className?: string;
     variant?: "default" | "none";
-    size?: "default" | "xs" | "sm" | "lg" | "xl";
+    size?: "default" | "xs" | "sm" | "lg" | "xl" | "none";
   }) => {
     return (
       <WrappedIcon
@@ -68,3 +75,10 @@ const withIcon = (Icon: React.ComponentType) => {
     );
   };
 };
+
+export const IconLoading = withIcon(ImSpinner2);
+export const IconPlus = withIcon(FaPlus);
+export const IconCoffee = withIcon(GiCoffeeCup);
+export const IconPrivacy = withIcon(MdPrivacyTip);
+export const IconFacebook = withIcon(FaFacebook);
+export const IconApplication = withIcon(FaThList);
