@@ -1,87 +1,132 @@
 "use client";
-import React, { forwardRef, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  forwardRef,
+  Fragment,
+  SetStateAction,
+  useRef,
+  useState,
+} from "react";
 import { Box, IconButton } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import CallEndIcon from "@mui/icons-material/CallEnd";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff";
-import ViewModuleIcon from "@mui/icons-material/ViewModule";
-import ViewListIcon from "@mui/icons-material/ViewList";
-import Slider from "react-slick";
 import ArrowBackIosNewTwoToneIcon from "@mui/icons-material/ArrowBackIosNewTwoTone";
 import ArrowForwardIosTwoToneIcon from "@mui/icons-material/ArrowForwardIosTwoTone";
-import SettingsIcon from "@mui/icons-material/Settings";
-import VideocamOffIcon from "@mui/icons-material/VideocamOff";
+import PushPinIcon from "@mui/icons-material/PushPin";
+import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
+import { ScrollArea } from "./_component/scroll-area";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 type IParticipant = {
   id: string;
   name: string;
   image?: string;
-  isVideo?: boolean;
-  isAudio?: boolean;
-  connectionStatus?: string;
-  role?: "host" | "guest";
+  isMuted?: boolean;
+  isBlind?: boolean;
+  isListen?: boolean;
 };
 
 interface ParticipantProps {
   participant: IParticipant; // Ensure this imports correctly
 }
 
+const ListCallAction = ({
+  isMuted,
+  isBlind,
+  isListen,
+  setIsListen,
+  setIsMuted,
+  setIsBlind,
+  handleEndCall,
+}: {
+  isMuted: boolean;
+  isBlind: boolean;
+  isListen?: boolean;
+  setIsListen?: Dispatch<SetStateAction<boolean>>;
+  setIsMuted?: Dispatch<SetStateAction<boolean>>;
+  setIsBlind?: Dispatch<SetStateAction<boolean>>;
+  handleEndCall?: () => void;
+}) => {
+  return (
+    <Box className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-4">
+      {!!setIsListen && (
+        <IconButton
+          color="primary"
+          onClick={() => setIsListen && setIsListen((prev) => !prev)}
+          className="!bg-gray-800 !text-white hover:bg-gray-700"
+        >
+          {isListen ? <VolumeUpIcon /> : <VolumeOffIcon />}
+        </IconButton>
+      )}
+
+      <IconButton
+        disabled={!setIsMuted}
+        color="primary"
+        onClick={() => setIsMuted && setIsMuted((prev) => !prev)}
+        className="!bg-gray-800 !text-white hover:bg-gray-700"
+      >
+        {isMuted ? <MicOffIcon /> : <MicIcon />}
+      </IconButton>
+
+      <IconButton
+        disabled={!setIsBlind}
+        color="primary"
+        onClick={() => setIsBlind && setIsBlind((prev) => !prev)}
+        className="!bg-gray-800 !text-white hover:bg-gray-700"
+      >
+        {isBlind ? <VideocamOffIcon /> : <VideocamIcon />}
+      </IconButton>
+
+      {!!handleEndCall && (
+        <IconButton
+          color="primary"
+          onClick={handleEndCall}
+          className="bg-red-500 hover:bg-red-600 text-white"
+        >
+          <CallEndIcon />
+        </IconButton>
+      )}
+    </Box>
+  );
+};
+
 const CommonParticipant = forwardRef<HTMLDivElement, ParticipantProps>(
   ({ participant }, ref) => {
     return (
-      <div
+      <Box
         ref={ref}
-        className="flex items-center justify-center relative w-full h-full"
+        className="flex items-center justify-center relative flex-grow rounded-md bg-background/10 min-w-[360px] min-h-[300px]"
       >
-        {/* Conditional rendering for video or image */}
-        {participant.isVideo ? (
-          <video
-            autoPlay
-            muted={participant.isAudio}
-            className="w-full h-full rounded-lg bg-gray-800 object-cover"
-          />
-        ) : (
-          <img
-            src={participant.image}
-            alt={participant.name}
-            className="w-full h-full rounded-lg bg-gray-800 object-cover"
-          />
-        )}
-
-        {/* Settings icon */}
-        <div className="absolute bottom-2 right-2">
-          <IconButton size="small" className="text-white">
-            <SettingsIcon />
-          </IconButton>
-        </div>
-
-        {/* Muted and video icons at the bottom */}
-        <div className="absolute bottom-0 flex justify-center space-x-2 mb-2">
-          {participant.isAudio ? (
-            <IconButton size="small" className="text-red-500" title="Muted">
-              <VolumeUpIcon />
-            </IconButton>
+        <Box>
+          {participant?.isBlind ? (
+            <video
+              autoPlay
+              muted={participant?.isMuted}
+              className="w-full h-full text-gray-500"
+            />
+          ) : participant.image ? (
+            <img
+              src={participant.image}
+              alt={participant.name}
+              className="w-full h-full text-gray-500"
+            />
           ) : (
-            <IconButton size="small" className="text-red-500" title="Muted">
-              <VolumeOffIcon />
-            </IconButton>
+            <AccountCircleIcon className="w-full h-full text-gray-500 max-w-[100px] max-height-[100px]" />
           )}
-          {participant.isVideo ? (
-            <IconButton size="small" className="text-red-500" title="No Video">
-              <VideocamOffIcon />
-            </IconButton>
-          ) : (
-            <IconButton size="small" className="text-red-500" title="No Video">
-              <VideocamOffIcon />
-            </IconButton>
-          )}
-        </div>
+          <Box className="text-center text-white mt-1">{participant.name}</Box>
+        </Box>
 
-        {/* Participant's name */}
-        <div className="text-center text-white mt-1">{participant.name}</div>
-      </div>
+        {/* Thanh điều khiển  */}
+        <ListCallAction
+          isMuted={Boolean(participant?.isMuted)}
+          isBlind={Boolean(participant?.isBlind)}
+        />
+      </Box>
     );
   }
 );
@@ -124,18 +169,18 @@ const ParticipantsList: React.FC<ParticipantsListProps> = ({
   onSelectParticipant,
 }) => {
   return (
-    <div className="flex flex-wrap justify-center gap-3 w-full h-full">
+    <Fragment>
       {participants.map((participant) => (
         <CommonParticipant key={participant.id} participant={participant} />
       ))}
-    </div>
+    </Fragment>
   );
 };
 
 const VideoCall: React.FC = () => {
-  const [micOn, setMicOn] = useState(true);
-  const [volumeOn, setVolumeOn] = useState(true);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid"); // Mặc định là chế độ lưới
+  const [isBlind, setIsBlind] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isListen, setIsListen] = useState(true);
   const [selectedParticipant, setSelectedParticipant] =
     useState<IParticipant | null>(null); // Trạng thái cho người tham gia được chọn
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -163,20 +208,8 @@ const VideoCall: React.FC = () => {
     { id: "20", name: "Người dùng 20" },
   ];
 
-  const handleToggleMic = () => {
-    setMicOn((prev) => !prev);
-  };
-
-  const handleToggleVolume = () => {
-    setVolumeOn((prev) => !prev);
-  };
-
   const handleEndCall = () => {
     console.log("Call Ended");
-  };
-
-  const toggleViewMode = () => {
-    setViewMode((prev) => (prev === "grid" ? "list" : "grid"));
   };
 
   const handleSelectParticipant = (participant: IParticipant) => {
@@ -219,66 +252,53 @@ const VideoCall: React.FC = () => {
   };
 
   return (
-    <Box className="relative w-full h-screen bg-black flex flex-col items-center justify-center">
-      {/* Hiển thị người được chọn hoặc danh sách */}
-      {selectedParticipant ? (
-        <>
-          <CommonParticipant participant={selectedParticipant} />
-
-          {/* Danh sách người tham gia trong chế độ carousel */}
-          <div className="w-full">
-            <Slider {...settings}>
-              {participants.map((participant) => (
-                <CommonParticipant
-                  key={participant.id}
-                  participant={participant}
-                />
-              ))}
-            </Slider>
-          </div>
-        </>
-      ) : (
-        // Danh sách người tham gia trong chế độ grid
-        <ParticipantsList
-          participants={participants}
-          onSelectParticipant={handleSelectParticipant}
-        />
-      )}
+    <Box className="relative w-full h-screen bg-black flex flex-col items-center p-6">
+      <ScrollArea
+        style={{
+          height: "calc(100vh - 100px)",
+        }}
+        className="max-w-[1366px] w-screen px-3"
+      >
+        <Box className="flex flex-wrap gap-6 w-full h-full flex-grow">
+          <ParticipantsList
+            participants={participants}
+            onSelectParticipant={handleSelectParticipant}
+          />
+        </Box>
+        {/* Hiển thị người được chọn hoặc danh sách */}
+        {/* {selectedParticipant ? (
+          <>
+            <CommonParticipant participant={selectedParticipant} />
+            <div className="w-full">
+              <Slider {...settings}>
+                {participants.map((participant) => (
+                  <CommonParticipant
+                    key={participant.id}
+                    participant={participant}
+                  />
+                ))}
+              </Slider>
+            </div>
+          </>
+        ) : (
+          <ParticipantsList
+            participants={participants}
+            onSelectParticipant={handleSelectParticipant}
+          />
+        )} */}
+      </ScrollArea>
 
       {/* Thanh điều khiển */}
-      <Box className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-4">
-        <IconButton
-          color="primary"
-          onClick={toggleViewMode}
-          className="bg-gray-700 hover:bg-gray-600 text-white"
-        >
-          {viewMode === "grid" ? <ViewListIcon /> : <ViewModuleIcon />}
-        </IconButton>
 
-        <IconButton
-          color="primary"
-          onClick={handleToggleVolume}
-          className="bg-gray-700 hover:bg-gray-600 text-white"
-        >
-          {volumeOn ? <VolumeUpIcon /> : <VolumeOffIcon />}
-        </IconButton>
-
-        <IconButton
-          color="primary"
-          onClick={handleToggleMic}
-          className="bg-gray-700 hover:bg-gray-600 text-white"
-        >
-          {micOn ? <MicIcon /> : <MicOffIcon />}
-        </IconButton>
-
-        <IconButton
-          color="primary"
-          onClick={handleEndCall}
-          className="bg-red-500 hover:bg-red-600 text-white"
-        >
-          <CallEndIcon />
-        </IconButton>
-      </Box>
+      <ListCallAction
+        isListen={isListen}
+        isMuted={isMuted}
+        isBlind={isBlind}
+        setIsListen={setIsListen}
+        setIsMuted={setIsMuted}
+        setIsBlind={setIsBlind}
+        handleEndCall={handleEndCall}
+      />
     </Box>
   );
 };
