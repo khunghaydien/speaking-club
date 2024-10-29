@@ -1,20 +1,9 @@
 "use client";
 import React, { ReactNode } from "react";
-import { createTheme, ThemeProvider, Theme } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useTheme } from "next-themes";
 
-// Extend the Palette interface to add customBorder
-declare module "@mui/material/styles" {
-  interface Palette {
-    customBorder: string;
-  }
-  interface PaletteOptions {
-    customBorder?: string;
-  }
-}
-
-// Light and dark theme configurations
 const lightTheme = createTheme({
   palette: {
     mode: "light",
@@ -42,7 +31,7 @@ function MUIProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
-      <CssBaseline /> {/* Reset baseline styles */}
+      <CssBaseline />
       {children}
     </ThemeProvider>
   );
