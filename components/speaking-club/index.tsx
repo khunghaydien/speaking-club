@@ -1,26 +1,31 @@
 "use client";
 import React from "react";
 import { ScrollArea } from "@/components/scroll-area";
-import { Box, Button, InputAdornment, TextField } from "@mui/material";
-import { useFormik } from "formik";
+import { Box, InputAdornment, TextField } from "@mui/material";
 import Search from "@mui/icons-material/Search";
+import Link from "next/link";
+import CreateSpeakingRoom from "./create-speaking-room";
+import { useFormik } from "formik";
 
-function ListSignaling() {
+function SpeakingClub() {
   const formik = useFormik({
     initialValues: {
-      keyname: "",
+      name: "",
     },
     onSubmit: () => {},
   });
 
   const { values, setFieldValue } = formik;
 
-  const onChange = (
+  // Move the handleChange function outside of the render
+  const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {};
+  ) => {
+    setFieldValue("name", e.target.value);
+  };
 
   return (
-    <form className="flex items-start gap-12">
+    <form className="py-6" onSubmit={formik.handleSubmit}>
       <Box className="flex flex-col gap-6 flex-grow">
         <Box className="flex justify-between gap-6 items-center pr-6">
           <Box className="max-w-[600px] w-full">
@@ -28,7 +33,8 @@ function ListSignaling() {
               label="Search"
               size="small"
               fullWidth
-              onChange={onChange}
+              value={values.name}
+              onChange={handleChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -39,23 +45,17 @@ function ListSignaling() {
             />
           </Box>
           <Box className="flex justify-end w-full">
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ height: "40px" }}
-            >
-              Create Room
-            </Button>
+            <CreateSpeakingRoom />
           </Box>
         </Box>
         <ScrollArea style={{ height: "calc(100vh - 112px)" }} className="pr-6">
-          <Box className="flex flex-col gap-3">
-            {/* Add your list or content here */}
-          </Box>
+          <Link className="card" href={`/speaking-club/${1}`} passHref>
+            Speaking Club
+          </Link>
         </ScrollArea>
       </Box>
     </form>
   );
 }
 
-export default ListSignaling;
+export default SpeakingClub;
