@@ -1,6 +1,36 @@
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
 
+/* Tùy chỉnh thanh cuộn */
+::-webkit-scrollbar {
+  width: 0;
+  /* Đặt chiều rộng scrollbar bằng 0 để ẩn */
+  height: 0;
+  /* Đặt chiều cao scrollbar bằng 0 (cho thanh cuộn ngang) */
+}
+
+/* Ẩn nút mũi tên */
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* Tùy chỉnh phần "thumb" */
+::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  /* Làm thumb trong suốt */
+  border-radius: 0.5rem;
+}
+
+/* Track của scrollbar trong suốt */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Dark mode cho thumb */
+.dark ::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
 .slick-list {
   margin-right: 8px;
 }
