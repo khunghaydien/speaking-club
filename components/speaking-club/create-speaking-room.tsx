@@ -5,20 +5,9 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { Autocomplete, Box, IconButton, TextField } from "@mui/material";
 import CloseTwoTone from "@mui/icons-material/CloseTwoTone";
-const maximumParticipant = [
-  { label: "1", value: 1 },
-  { label: "2", value: 2 },
-  { label: "3", value: 3 },
-  { label: "4", value: 4 },
-  { label: "5", value: 5 },
-  { label: "6", value: 6 },
-  { label: "7", value: 7 },
-  { label: "8", value: 8 },
-  { label: "9", value: 9 },
-  { label: "10", value: 10 },
-  { label: "Infinity", value: 10 },
-];
-const language = [];
+import { useFormik } from "formik";
+import { languages, levels, maximumParticipants, TOption } from "./const";
+import { createSpeakingRoomValidation } from "./formik";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -29,7 +18,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CreateSpeakingRoom() {
+const CreateSpeakingRoom = React.memo(() => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -38,6 +27,23 @@ export default function CreateSpeakingRoom() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      language: null,
+      level: null,
+      maximumParticipant: null,
+    },
+    validationSchema: createSpeakingRoomValidation,
+    onSubmit: () => {},
+  });
+
+  const { values, setFieldValue, errors, touched } = formik;
+
+  const onChangeValue = (value: string | TOption | null, keyname: string) => {
+    setFieldValue(keyname, value);
   };
 
   return (
@@ -53,7 +59,10 @@ export default function CreateSpeakingRoom() {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <form className="flex flex-col gap-6 p-6">
+        <form
+          className="flex flex-col gap-6 p-6"
+          onSubmit={formik.handleSubmit}
+        >
           <Box className="flex items-center justify-between gap-6">
             <Box className="font-bold text-lg">Create Speaking Room</Box>
             <IconButton color="default" onClick={handleClose}>
@@ -61,9 +70,18 @@ export default function CreateSpeakingRoom() {
             </IconButton>
           </Box>
 
-          <Box className="flex gap-6 items-center w-full">
+          <Box className="flex gap-6 items-center w-full mb-6">
             <Box className="flex flex-grow">
               <TextField
+                value={values.name}
+                error={!!errors.name && !!touched.name}
+                helperText={!!errors.name && !!touched.name && errors.name}
+                FormHelperTextProps={{
+                  className: "error-message !m-0 !absolute !top-10",
+                }}
+                onChange={(
+                  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                ) => onChangeValue(e.target.value, "name")}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -72,34 +90,99 @@ export default function CreateSpeakingRoom() {
             </Box>
             <Autocomplete
               size="small"
-              options={maximumParticipant}
+              options={maximumParticipants}
+              value={values.maximumParticipant}
+              onChange={(_event, value) =>
+                onChangeValue(value, "maximumParticipant")
+              }
               sx={{ minWidth: 250 }}
               renderInput={(params) => (
-                <TextField {...params} label="Maximum Participant" />
+                <TextField
+                  {...params}
+                  label="Maximum Participant"
+                  error={
+                    !!errors.maximumParticipant && !!touched.maximumParticipant
+                  }
+                  helperText={
+                    !!errors.maximumParticipant &&
+                    !!touched.maximumParticipant &&
+                    errors.maximumParticipant
+                  }
+                  FormHelperTextProps={{
+                    className: "error-message !m-0 !absolute !top-10",
+                  }}
+                />
               )}
             />
           </Box>
           <Box className="flex gap-6 items-center w-full">
             <Autocomplete
               size="small"
-              options={maximumParticipant}
-              sx={{ minWidth: 250 }}
+              fullWidth
+              options={languages}
+              autoHighlight
+              value={values.language}
+              onChange={(_event, value) => setFieldValue("language", value)}
+              getOptionLabel={(option: TOption) => option.label}
+              renderOption={(props, option) => {
+                const { key, ...optionProps } = props;
+                return (
+                  <Box
+                    key={key}
+                    component="li"
+                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                    {...optionProps}
+                  >
+                    <img
+                      loading="lazy"
+                      width="20"
+                      src={`https://flagcdn.com/w20/${option.icon}.png`}
+                      alt={`${option.label} flag`}
+                    />
+                    {option.label}
+                  </Box>
+                );
+              }}
               renderInput={(params) => (
-                <TextField {...params} label="Maximum Participant" />
+                <TextField
+                  {...params}
+                  label="Language"
+                  inputProps={{
+                    ...params.inputProps,
+                  }}
+                  error={!!errors.language && !!touched.language}
+                  helperText={
+                    !!errors.language && !!touched.language && errors.language
+                  }
+                  FormHelperTextProps={{
+                    className: "error-message !m-0 !absolute !top-10",
+                  }}
+                />
               )}
             />
             <Autocomplete
               size="small"
-              options={maximumParticipant}
-              sx={{ minWidth: 250 }}
+              fullWidth
+              options={levels}
+              value={values.level}
+              onChange={(_event, value) => onChangeValue(value, "level")}
               renderInput={(params) => (
-                <TextField {...params} label="Maximum Participant" />
+                <TextField
+                  {...params}
+                  label="Level"
+                  error={!!errors.level && !!touched.level}
+                  helperText={!!errors.level && !!touched.level && errors.level}
+                  FormHelperTextProps={{
+                    className: "error-message !m-0 !absolute !top-10",
+                  }}
+                />
               )}
             />
           </Box>
+
           <Box className="flex items-center justify-end gap-3">
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleClose} type="submit" variant="contained">
+            <Button type="submit" variant="contained">
               Submit
             </Button>
           </Box>
@@ -107,4 +190,5 @@ export default function CreateSpeakingRoom() {
       </Dialog>
     </React.Fragment>
   );
-}
+});
+export default CreateSpeakingRoom;

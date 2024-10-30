@@ -5,10 +5,27 @@ import { Box, InputAdornment, TextField } from "@mui/material";
 import Search from "@mui/icons-material/Search";
 import Link from "next/link";
 import CreateSpeakingRoom from "./create-speaking-room";
+import { useFormik } from "formik";
 
 function SpeakingClub() {
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+    },
+    onSubmit: () => {},
+  });
+
+  const { values, setFieldValue } = formik;
+
+  // Move the handleChange function outside of the render
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFieldValue("name", e.target.value);
+  };
+
   return (
-    <form className="py-6">
+    <form className="py-6" onSubmit={formik.handleSubmit}>
       <Box className="flex flex-col gap-6 flex-grow">
         <Box className="flex justify-between gap-6 items-center pr-6">
           <Box className="max-w-[600px] w-full">
@@ -16,6 +33,8 @@ function SpeakingClub() {
               label="Search"
               size="small"
               fullWidth
+              value={values.name}
+              onChange={handleChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
