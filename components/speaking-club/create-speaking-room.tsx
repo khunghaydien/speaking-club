@@ -3,13 +3,14 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { Autocomplete, Box, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import CloseTwoTone from "@mui/icons-material/CloseTwoTone";
 import { useFormik } from "formik";
-import { languages, levels, maximumParticipants, TOption } from "./const";
+import { languages, levels, maximumParticipants } from "./const";
 import { createSpeakingRoomValidation } from "./formik";
 import CommonInput from "@/components/input/common-input";
 import CommonSelect from "@/components/input/common-select";
+import NextImage from "next/image";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -112,15 +113,19 @@ const CreateSpeakingRoom = React.memo(() => {
                 return (
                   <Box
                     key={key}
-                    component="li"
-                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                    component={"li"}
                     {...optionProps}
+                    sx={{
+                      display: "flex",
+                      gap: (theme) => theme.spacing(1),
+                      alignItems: "center",
+                    }}
                   >
-                    <img
-                      loading="lazy"
-                      width="20"
-                      src={`https://flagcdn.com/w20/${option.icon}.png`}
-                      alt={`${option.label} flag`}
+                    <NextImage
+                      src={option.image ?? ""}
+                      alt={option.label}
+                      width={20}
+                      height={12}
                     />
                     {option.label}
                   </Box>

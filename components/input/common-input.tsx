@@ -1,26 +1,8 @@
-import {
-  Box,
-  FormHelperText,
-  SxProps,
-  TextField,
-  TextFieldProps,
-  Theme,
-} from "@mui/material";
+import { Box, FormHelperText, TextField, TextFieldProps } from "@mui/material";
 import React, { forwardRef } from "react";
-type CommonInputProps = TextFieldProps & {
-  style?: SxProps<Theme>;
-};
-
-const CommonInput = forwardRef<HTMLDivElement, CommonInputProps>(
+const CommonInput = forwardRef<HTMLDivElement, TextFieldProps>(
   (
-    {
-      error,
-      helperText,
-      size = "small",
-      variant = "outlined",
-      style,
-      ...props
-    },
+    { error, helperText, size = "small", variant = "outlined", ...props },
     ref
   ) => {
     return (
@@ -29,7 +11,6 @@ const CommonInput = forwardRef<HTMLDivElement, CommonInputProps>(
         sx={{
           position: "relative",
           width: "100%",
-          ...style,
         }}
       >
         <TextField
