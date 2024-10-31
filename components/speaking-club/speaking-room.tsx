@@ -67,9 +67,11 @@ const ListCallAction = ({
 
       {!!handleEndCall && (
         <IconButton
-          color="primary"
+          sx={{
+            color: "#ffffff",
+          }}
           onClick={handleEndCall}
-          className="bg-destructive hover:bg-destructive/90 text-white"
+          className="bg-destructive hover:bg-destructive/90"
         >
           <CallEnd />
         </IconButton>

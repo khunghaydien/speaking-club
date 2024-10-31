@@ -26,6 +26,39 @@ const getTheme = (mode: "dark" | "light") => {
           },
         },
       },
+      MuiMenu: {
+        styleOverrides: {
+          paper: {
+            marginBottom: "0.25rem",
+            marginTop: "0.25rem",
+            paddingInline: "0.25rem",
+            "& li": {
+              borderRadius: "0.25rem",
+              marginBottom: "0.5rem",
+              "&:last-child": {
+                marginBottom: "unset",
+              },
+            },
+          },
+        },
+      },
+      MuiAutocomplete: {
+        styleOverrides: {
+          paper: {
+            width: "100%",
+            paddingInline: "0.25rem",
+          },
+          listbox: {
+            "& li": {
+              borderRadius: "0.25rem",
+              marginBottom: "0.5rem",
+              "&:last-child": {
+                marginBottom: "unset",
+              },
+            },
+          },
+        },
+      },
     },
   });
 };

@@ -27,7 +27,7 @@ function SpeakingClub() {
   return (
     <form className="py-6" onSubmit={formik.handleSubmit}>
       <Box className="flex flex-col gap-6 flex-grow">
-        <Box className="flex justify-between gap-6 items-center pr-6">
+        <Box className="flex justify-between gap-6 items-center">
           <Box className="max-w-[600px] w-full">
             <TextField
               label="Search"

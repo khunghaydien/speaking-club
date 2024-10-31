@@ -54,27 +54,9 @@ function CommonSelect<T>({
       loading={loading}
       autoHighlight
       size={size}
-      sx={{
-        width: "100% ",
-        ...sx,
-      }}
       slotProps={{
-        paper: {
-          sx: {
-            paddingX: (theme) => theme.spacing(1),
-          },
-        },
         listbox: {
           onScroll: handleScroll,
-          sx: {
-            "& li": {
-              borderRadius: (theme) => theme.spacing(1),
-              marginBottom: (theme) => theme.spacing(0.5),
-              "&:last-child": {
-                marginBottom: "unset",
-              },
-            },
-          },
         },
       }}
       popupIcon={loading ? <CircularProgress size={20} /> : popupIcon}

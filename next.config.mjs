@@ -2,7 +2,16 @@
 const nextConfig = {
     reactStrictMode: false,
     images: {
-        domains: ['flagcdn.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'flagcdn.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'lh3.googleusercontent.com',
+            },
+        ],
     },
 };
 
