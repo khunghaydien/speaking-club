@@ -51,7 +51,7 @@ const CreateSpeakingRoom = React.memo(() => {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="contained" onClick={handleClickOpen}>
         Create Speaking Room
       </Button>
       <Dialog

@@ -114,7 +114,7 @@ export const Participant = ({
           <img src={image} alt={name} />
         ) : (
           <AccountCircle
-            style={{
+            sx={{
               width: "50px",
               height: "50px",
             }}
@@ -136,7 +136,7 @@ const NextArrow = (props: any) => {
     <IconButton
       onClick={onClick}
       className=" top-1/2 right-0 transform -translate-y-1/2 bg-muted-foreground/10 hover:bg-muted-foreground/20"
-      style={{ zIndex: 1, position: "absolute" }}
+      sx={{ zIndex: 1, position: "absolute" }}
     >
       <ArrowForwardIosTwoTone />
     </IconButton>
@@ -149,7 +149,7 @@ const PrevArrow = (props: any) => {
     <IconButton
       onClick={onClick}
       className=" top-1/2 left-0 transform -translate-y-1/2 bg-muted-foreground/10 hover:bg-muted-foreground/20"
-      style={{ zIndex: 1, position: "absolute" }}
+      sx={{ zIndex: 1, position: "absolute" }}
     >
       <ArrowBackIosNewTwoTone />
     </IconButton>
@@ -225,7 +225,7 @@ export const ListParticipant = ({
             <IconButton
               color="primary"
               onClick={() => onSelect()}
-              style={{
+              sx={{
                 position: "absolute",
               }}
               className="top-1 right-1 z-10"

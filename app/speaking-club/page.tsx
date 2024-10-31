@@ -7,7 +7,7 @@ const SpeakingClub = dynamic(() => import("@/components/speaking-club"), {
   ssr: false,
   loading: () => (
     <Box className="flex items-center justify-center w-screen h-screen fixed top-0 left-0 z-50 bg-muted">
-      <CircularProgress className="text-primary" />
+      <CircularProgress color="primary" />
     </Box>
   ),
 });

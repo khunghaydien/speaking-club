@@ -4,33 +4,36 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useTheme } from "next-themes";
 
-const lightTheme = createTheme({
-  palette: {
-    mode: "light",
-  },
-  typography: {
-    fontFamily: "var(--font-geist-sans), Arial, sans-serif",
-    h1: { fontFamily: "var(--font-geist-mono), monospace" },
-    h2: { fontFamily: "var(--font-geist-mono), monospace" },
-  },
-});
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-  },
-  typography: {
-    fontFamily: "var(--font-geist-sans), Arial, sans-serif",
-    h1: { fontFamily: "var(--font-geist-mono), monospace" },
-    h2: { fontFamily: "var(--font-geist-mono), monospace" },
-  },
-});
-
+const getTheme = (mode: "dark" | "light") => {
+  return createTheme({
+    palette: {
+      mode,
+    },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            fontFamily: "GeistMonoVF, Arial, sans-serif",
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            fontFamily: "GeistMonoVF, Arial, sans-serif",
+            textTransform: "capitalize",
+            fontWeight: "bold",
+          },
+        },
+      },
+    },
+  });
+};
 function MUIProvider({ children }: { children: ReactNode }) {
-  const { theme } = useTheme(); // Access the current theme from next-themes
-
+  const { theme } = useTheme();
+  const currentTheme = getTheme(theme === "dark" ? "dark" : "light");
   return (
-    <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
+    <ThemeProvider theme={currentTheme}>
       <CssBaseline />
       {children}
     </ThemeProvider>

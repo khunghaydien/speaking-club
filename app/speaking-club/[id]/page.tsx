@@ -6,7 +6,7 @@ const SpeakingRoom = dynamic(
     ssr: false,
     loading: () => (
       <Box className="flex items-center justify-center w-screen h-screen fixed top-0 left-0 z-50">
-        <CircularProgress className="text-primary" />
+        <CircularProgress color="primary" />
       </Box>
     ),
   }
