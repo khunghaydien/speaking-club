@@ -10,75 +10,7 @@ import {
 import Slider, { Settings } from "react-slick";
 import clsx from "clsx";
 import { ScrollArea } from "@/components/scroll-area";
-import Mic from "@mui/icons-material/Mic";
-import MicOff from "@mui/icons-material/MicOff";
-import CallEnd from "@mui/icons-material/CallEnd";
-import Videocam from "@mui/icons-material/Videocam";
-import VideocamOff from "@mui/icons-material/VideocamOff";
-import VolumeUp from "@mui/icons-material/VolumeUp";
-import VolumeOff from "@mui/icons-material/VolumeOff";
-
-const ListCallAction = ({
-  isMuted,
-  isBlind,
-  isListen,
-  setIsListen,
-  setIsMuted,
-  setIsBlind,
-  handleEndCall,
-}: {
-  isMuted: boolean;
-  isBlind: boolean;
-  isListen?: boolean;
-  setIsListen?: Dispatch<SetStateAction<boolean>>;
-  setIsMuted?: Dispatch<SetStateAction<boolean>>;
-  setIsBlind?: Dispatch<SetStateAction<boolean>>;
-  handleEndCall?: () => void;
-}) => {
-  return (
-    <Box className="flex items-center justify-center w-full gap-3">
-      {!!setIsListen && (
-        <IconButton
-          color="primary"
-          onClick={() => setIsListen && setIsListen((prev) => !prev)}
-          className="!bg-muted-foreground/10"
-        >
-          {isListen ? <VolumeUp /> : <VolumeOff />}
-        </IconButton>
-      )}
-
-      <IconButton
-        disabled={!setIsMuted}
-        color="primary"
-        onClick={() => setIsMuted && setIsMuted((prev) => !prev)}
-        className="!bg-muted-foreground/10"
-      >
-        {isMuted ? <MicOff /> : <Mic />}
-      </IconButton>
-
-      <IconButton
-        disabled={!setIsBlind}
-        color="primary"
-        onClick={() => setIsBlind && setIsBlind((prev) => !prev)}
-        className="!bg-muted-foreground/10"
-      >
-        {isBlind ? <VideocamOff /> : <Videocam />}
-      </IconButton>
-
-      {!!handleEndCall && (
-        <IconButton
-          sx={{
-            color: "#ffffff",
-          }}
-          onClick={handleEndCall}
-          className="bg-destructive hover:bg-destructive/90"
-        >
-          <CallEnd />
-        </IconButton>
-      )}
-    </Box>
-  );
-};
+import { CallingAction } from "./speaking-room/calling-action";
 
 export type TParticipant = {
   id: string;
@@ -100,13 +32,13 @@ export const Participant = ({
 }) => {
   const { isBlind, isMuted, image, name } = participant;
   return (
-    <Box
+    <div
       className={clsx(
         className,
         "flex items-center flex-col justify-center flex-grow rounded-md bg-muted-foreground/10 hover:bg-muted-foreground/20 cursor-pointer py-6"
       )}
     >
-      <Box
+      <div
         onClick={() => onSelect(participant)}
         className="flex items-center flex-col justify-center w-full h-full"
       >
@@ -123,12 +55,12 @@ export const Participant = ({
             className="text-primary"
           />
         )}
-        <Box className="text-center font-bold">{name}</Box>
-      </Box>
+        <div className="text-center font-bold">{name}</div>
+      </div>
 
       {/* Thanh điều khiển  */}
-      <ListCallAction isMuted={Boolean(isMuted)} isBlind={Boolean(isBlind)} />
-    </Box>
+      <CallingAction isMuted={Boolean(isMuted)} isBlind={Boolean(isBlind)} />
+    </div>
   );
 };
 
@@ -206,10 +138,10 @@ export const ListParticipant = ({
   onSelect: (participant?: TParticipant) => void;
 }) => {
   return (
-    <Box>
+    <div>
       {selectedParticipant && participants.length > 1 ? (
-        <Box className="h-[calc(100vh-112px)] flex flex-col gap-6">
-          <Box className="flex-shrink-0">
+        <div className="h-[calc(100vh-201px)] flex flex-col gap-6">
+          <div className="flex-shrink-0">
             <Slider {...settings}>
               {participants.map((participant: TParticipant) => {
                 return (
@@ -222,8 +154,8 @@ export const ListParticipant = ({
                 );
               })}
             </Slider>
-          </Box>
-          <Box className="h-full m-2 relative">
+          </div>
+          <div className="h-full m-2 relative">
             <IconButton
               color="primary"
               onClick={() => onSelect()}
@@ -239,15 +171,15 @@ export const ListParticipant = ({
               participant={selectedParticipant}
               onSelect={onSelect}
             />
-          </Box>
-        </Box>
+          </div>
+        </div>
       ) : (
         <ScrollArea
           style={{
-            height: "calc(100vh - 112px)",
+            height: "calc(100vh - 201px)",
           }}
         >
-          <Box className="flex flex-wrap gap-6 w-full h-full flex-grow">
+          <div className="flex flex-wrap gap-6 w-full h-full flex-grow">
             {participants.map((participant: TParticipant) => {
               return (
                 <Participant
@@ -258,10 +190,10 @@ export const ListParticipant = ({
                 />
               );
             })}
-          </Box>
+          </div>
         </ScrollArea>
       )}
-    </Box>
+    </div>
   );
 };
 
@@ -297,7 +229,7 @@ const SpeakingRoom: React.FC = () => {
   const handleEndCall = () => {};
 
   return (
-    <Box className="flex flex-col gap-6 py-6">
+    <div className="flex flex-col gap-6 py-6">
       <ListParticipant
         participants={listParticipant}
         selectedParticipant={selectedParticipant}
@@ -305,7 +237,7 @@ const SpeakingRoom: React.FC = () => {
           setSelectedParticipant(participant)
         }
       />
-      <ListCallAction
+      <CallingAction
         isMuted={isMuted}
         isBlind={isBlind}
         isListen={isListen}
@@ -314,7 +246,7 @@ const SpeakingRoom: React.FC = () => {
         setIsBlind={setIsBlind}
         handleEndCall={handleEndCall}
       />
-    </Box>
+    </div>
   );
 };
 

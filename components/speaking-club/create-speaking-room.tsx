@@ -48,7 +48,25 @@ const CreateSpeakingRoom = React.memo(() => {
   const onChangeValue = (value: unknown, keyname: string) => {
     setFieldValue(keyname, value);
   };
-
+  const top100Films = [
+    { label: "The Shawshank Redemption", value: 1994 },
+    { label: "The Godfather", value: 1972 },
+    { label: "The Godfather: Part II", value: 1974 },
+    { label: "The Dark Knight", value: 2008 },
+    { label: "12 Angry Men", value: 1957 },
+    { label: "Schindler's List", value: 1993 },
+    { label: "Pulp Fiction", value: 1994 },
+    {
+      label: "The Lord of the Rings: The Return of the King",
+      value: 2003,
+    },
+    { label: "The Good, the Bad and the Ugly", value: 1966 },
+    { label: "Fight Club", value: 1999 },
+    {
+      label: "The Lord of the Rings: The Fellowship of the Ring",
+      value: 2001,
+    },
+  ];
   return (
     <React.Fragment>
       <Button variant="contained" onClick={handleClickOpen}>
@@ -62,19 +80,19 @@ const CreateSpeakingRoom = React.memo(() => {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <Box
-          component={"form"}
+        <form
           className="flex flex-col px-6 py-3 gap-8"
           onSubmit={formik.handleSubmit}
         >
-          <Box className="flex items-center justify-between gap-6">
-            <Box className="font-bold text-lg">Create Speaking Room</Box>
+          <div className="flex items-center justify-between gap-6">
+            <div className="font-bold text-lg">Create Speaking Room</div>
             <IconButton color="default" onClick={handleClose}>
               <CloseTwoTone />
             </IconButton>
-          </Box>
-          <Box className="flex gap-6 items-center w-full">
+          </div>
+          <div className="flex gap-6 items-center w-full">
             <CommonInput
+              required
               label="Name"
               value={values.name}
               error={!!errors.name && !!touched.name}
@@ -97,8 +115,8 @@ const CreateSpeakingRoom = React.memo(() => {
                 errors.maximumParticipant
               }
             />
-          </Box>
-          <Box className="flex gap-6 items-center w-full">
+          </div>
+          <div className="flex gap-6 items-center w-full">
             <CommonSelect
               label="Language"
               error={!!errors.language && !!touched.language}
@@ -140,14 +158,23 @@ const CreateSpeakingRoom = React.memo(() => {
               error={!!errors.level && !!touched.level}
               helperText={!!errors.level && !!touched.level && errors.level}
             />
-          </Box>
-          <Box className="flex items-center justify-end gap-3">
+          </div>
+          <CommonSelect
+            multiple
+            label="Phim"
+            limitTags={2}
+            id="multiple-limit-tags"
+            options={top100Films}
+            sx={{ width: "500px" }}
+          />
+
+          <div className="flex items-center justify-end gap-3">
             <Button onClick={handleClose}>Cancel</Button>
             <Button type="submit" variant="contained">
               Submit
             </Button>
-          </Box>
-        </Box>
+          </div>
+        </form>
       </Dialog>
     </React.Fragment>
   );

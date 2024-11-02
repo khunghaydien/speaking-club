@@ -39,7 +39,6 @@ function CommonSelect<
   FreeSolo extends boolean | undefined,
   ChipComponent extends React.ElementType = ChipTypeMap["defaultComponent"]
 >({
-  multiple,
   label,
   error,
   helperText,
@@ -69,7 +68,6 @@ function CommonSelect<
   return (
     <Autocomplete
       {...props}
-      multiple={multiple}
       fullWidth
       loading={loading}
       autoHighlight
