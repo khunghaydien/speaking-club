@@ -2,8 +2,8 @@ import SignIn from "@/components/sign-in";
 import SwitchTheme from "@/components/switch-theme";
 import { getServerSession } from "next-auth";
 import React, { ReactNode } from "react";
-import { authOptions } from "../api/auth/[...nextauth]/route";
 import UserSession from "@/components/user-session";
+import { authOptions } from "@/const";
 
 async function layout({ children }: { children: ReactNode }) {
   const session = await getServerSession(authOptions);
