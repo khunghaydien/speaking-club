@@ -5,7 +5,7 @@ import { InputAdornment, TextField } from "@mui/material";
 import Search from "@mui/icons-material/Search";
 import Link from "next/link";
 import { useFormik } from "formik";
-import InitializationRoom from "./speaking-room/initialization-room";
+import CreateSpeakingRoom from "./create-speaking-room";
 
 function SpeakingClub() {
   const formik = useFormik({
@@ -44,7 +44,7 @@ function SpeakingClub() {
             />
           </div>
           <div className="flex justify-end w-full">
-            <InitializationRoom />
+            <CreateSpeakingRoom />
           </div>
         </div>
         <ScrollArea style={{ height: "calc(100vh - 177px)" }} className="pr-6">

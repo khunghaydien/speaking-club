@@ -6,11 +6,11 @@ import { TransitionProps } from "@mui/material/transitions";
 import { Box, IconButton } from "@mui/material";
 import CloseTwoTone from "@mui/icons-material/CloseTwoTone";
 import { useFormik } from "formik";
-import { initializationRoomValidation } from "../formik";
 import CommonInput from "@/components/input/common-input";
 import CommonSelect from "@/components/input/common-select";
 import NextImage from "next/image";
 import { languages, levels, maximumParticipants } from "@/const";
+import { createSpeakingRoomValidation } from "@/validation";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const InitializationRoom = React.memo(() => {
+const CreateSpeakingRoom = React.memo(() => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -39,7 +39,7 @@ const InitializationRoom = React.memo(() => {
       level: null,
       maximumParticipant: null,
     },
-    validationSchema: initializationRoomValidation,
+    validationSchema: createSpeakingRoomValidation,
     onSubmit: () => {},
   });
 
@@ -48,25 +48,11 @@ const InitializationRoom = React.memo(() => {
   const onChangeValue = (value: unknown, keyname: string) => {
     setFieldValue(keyname, value);
   };
-  const top100Films = [
-    { label: "The Shawshank Redemption", value: 1994 },
-    { label: "The Godfather", value: 1972 },
-    { label: "The Godfather: Part II", value: 1974 },
-    { label: "The Dark Knight", value: 2008 },
-    { label: "12 Angry Men", value: 1957 },
-    { label: "Schindler's List", value: 1993 },
-    { label: "Pulp Fiction", value: 1994 },
-    {
-      label: "The Lord of the Rings: The Return of the King",
-      value: 2003,
-    },
-    { label: "The Good, the Bad and the Ugly", value: 1966 },
-    { label: "Fight Club", value: 1999 },
-    {
-      label: "The Lord of the Rings: The Fellowship of the Ring",
-      value: 2001,
-    },
-  ];
+
+  React.useEffect(() => {
+    setFieldValue("maximumParticipant", { label: "1", value: 1 });
+  }, []);
+
   return (
     <React.Fragment>
       <Button variant="contained" onClick={handleClickOpen}>
@@ -100,6 +86,7 @@ const InitializationRoom = React.memo(() => {
               onChange={(e) => onChangeValue(e.target.value, "name")}
             />
             <CommonSelect
+              disabled
               options={maximumParticipants}
               value={values.maximumParticipant}
               onChange={(_event, value) =>
@@ -159,15 +146,6 @@ const InitializationRoom = React.memo(() => {
               helperText={!!errors.level && !!touched.level && errors.level}
             />
           </div>
-          <CommonSelect
-            multiple
-            label="Phim"
-            limitTags={2}
-            id="multiple-limit-tags"
-            options={top100Films}
-            sx={{ width: "500px" }}
-          />
-
           <div className="flex items-center justify-end gap-3">
             <Button onClick={handleClose}>Cancel</Button>
             <Button type="submit" variant="contained">
@@ -179,4 +157,4 @@ const InitializationRoom = React.memo(() => {
     </React.Fragment>
   );
 });
-export default InitializationRoom;
+export default CreateSpeakingRoom;
