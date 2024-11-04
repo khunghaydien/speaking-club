@@ -1,4 +1,10 @@
-import { OptionProps } from "@/components/input/common-select";
+
+export type OptionProps = {
+    value: string | number;
+    label: string;
+    image?: string;
+    icon?: string;
+};
 
 export const maximumParticipants: OptionProps[] = [
     { label: "1", value: 1 },

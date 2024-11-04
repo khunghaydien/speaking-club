@@ -1,7 +1,6 @@
 "use client";
 import {
   Avatar,
-  Box,
   Divider,
   ListItemIcon,
   Menu,
@@ -71,12 +70,12 @@ function UserSession({ session }: { session: Session }) {
               height={50}
             />
           </Avatar>
-          <Box className="flex flex-col ml-3">
-            <Box className="font-bold text-lg">{session.user?.name}</Box>
-            <Box className="text-sx text-muted-foreground">
+          <div className="flex flex-col ml-3">
+            <div className="font-bold text-lg">{session.user?.name}</div>
+            <div className="text-sx text-muted-foreground">
               {session.user?.email}
-            </Box>
-          </Box>
+            </div>
+          </div>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
