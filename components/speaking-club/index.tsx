@@ -4,8 +4,8 @@ import { ScrollArea } from "@/components/scroll-area";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import Search from "@mui/icons-material/Search";
 import Link from "next/link";
-import CreateSpeakingRoom from "./create-speaking-room";
 import { useFormik } from "formik";
+import InitializationRoom from "./speaking-room/initialization-room";
 
 function SpeakingClub() {
   const formik = useFormik({
@@ -17,7 +17,6 @@ function SpeakingClub() {
 
   const { values, setFieldValue } = formik;
 
-  // Move the handleChange function outside of the render
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -25,7 +24,7 @@ function SpeakingClub() {
   };
 
   return (
-    <form className="py-6" onSubmit={formik.handleSubmit}>
+    <Box component={"form"} onSubmit={formik.handleSubmit}>
       <Box className="flex flex-col gap-6 flex-grow">
         <Box className="flex justify-between gap-6 items-center">
           <Box className="max-w-[600px] w-full">
@@ -45,16 +44,16 @@ function SpeakingClub() {
             />
           </Box>
           <Box className="flex justify-end w-full">
-            <CreateSpeakingRoom />
+            <InitializationRoom />
           </Box>
         </Box>
-        <ScrollArea style={{ height: "calc(100vh - 112px)" }} className="pr-6">
+        <ScrollArea style={{ height: "calc(100vh - 177px)" }} className="pr-6">
           <Link className="card" href={`/speaking-club/${1}`} passHref>
             Speaking Club
           </Link>
         </ScrollArea>
       </Box>
-    </form>
+    </Box>
   );
 }
 

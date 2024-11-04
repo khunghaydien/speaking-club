@@ -1,12 +1,10 @@
 "use client";
 import { Button } from "@mui/material";
 import { signIn } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useMounted } from "./hook";
 function SignIn() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
   if (!mounted) return null;
   return (
     <Button

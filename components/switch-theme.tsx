@@ -1,23 +1,19 @@
 "use client";
 import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import LightModeTwoToneIcon from "@mui/icons-material/LightModeTwoTone";
 import NightlightTwoToneIcon from "@mui/icons-material/NightlightTwoTone";
 import IconButton from "@mui/material/IconButton";
+import { useMounted } from "./hook";
 
 function SwitchTheme() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
+  if (!mounted) return null;
   const { theme, setTheme } = useTheme();
 
   const handleThemeChange = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
 
   return (
     <IconButton

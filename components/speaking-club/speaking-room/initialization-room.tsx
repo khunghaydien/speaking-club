@@ -6,8 +6,8 @@ import { TransitionProps } from "@mui/material/transitions";
 import { Box, IconButton } from "@mui/material";
 import CloseTwoTone from "@mui/icons-material/CloseTwoTone";
 import { useFormik } from "formik";
-import { languages, levels, maximumParticipants } from "./const";
-import { createSpeakingRoomValidation } from "./formik";
+import { languages, levels, maximumParticipants } from "../const";
+import { initializationRoomValidation } from "../formik";
 import CommonInput from "@/components/input/common-input";
 import CommonSelect from "@/components/input/common-select";
 import NextImage from "next/image";
@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const CreateSpeakingRoom = React.memo(() => {
+const InitializationRoom = React.memo(() => {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -39,7 +39,7 @@ const CreateSpeakingRoom = React.memo(() => {
       level: null,
       maximumParticipant: null,
     },
-    validationSchema: createSpeakingRoomValidation,
+    validationSchema: initializationRoomValidation,
     onSubmit: () => {},
   });
 
@@ -152,4 +152,4 @@ const CreateSpeakingRoom = React.memo(() => {
     </React.Fragment>
   );
 });
-export default CreateSpeakingRoom;
+export default InitializationRoom;

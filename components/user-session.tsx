@@ -13,8 +13,12 @@ import React, { Fragment } from "react";
 import NextImage from "next/image";
 import { Logout, Settings } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { useMounted } from "./hook";
 
 function UserSession({ session }: { session: Session }) {
+  const mounted = useMounted();
+  if (!mounted) return null;
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
