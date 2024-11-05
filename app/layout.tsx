@@ -7,6 +7,8 @@ import { getServerSession } from "next-auth/next";
 import SessionProvider from "@/providers/session-provider";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import ClientProvider from "@/providers/apollo-provider";
+import StoreProvider from "@/providers/store-provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,20 +40,24 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-muted-foreground/10 text-black dark:text-white`}
       >
-        <SessionProvider session={session}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <MUIProvider>
-              <NextIntlClientProvider messages={messages}>
-                {children}
-              </NextIntlClientProvider>
-            </MUIProvider>
-          </ThemeProvider>
-        </SessionProvider>
+        <ClientProvider>
+          <StoreProvider>
+            <SessionProvider session={session}>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <MUIProvider>
+                  <NextIntlClientProvider messages={messages}>
+                    {children}
+                  </NextIntlClientProvider>
+                </MUIProvider>
+              </ThemeProvider>
+            </SessionProvider>
+          </StoreProvider>
+        </ClientProvider>
       </body>
     </html>
   );

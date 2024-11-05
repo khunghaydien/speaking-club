@@ -18,10 +18,10 @@ import IconButton from "@mui/material/IconButton";
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "@mui/material";
 import { useMounted } from "../../hooks";
-import { defaultLocale, Locale } from "@/i18n/config";
-import { setUserLocale } from "@/services/locale";
 import { useLocale } from "next-intl";
 import clsx from "clsx";
+import { setUserLocale } from "@/services";
+import { defaultLocale, Locale } from "@/i18n";
 
 const UserSession = () => {
   const { data } = useSession();

@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import CommonInput from "@/components/input/common-input";
 import CommonSelect from "@/components/input/common-select";
 import NextImage from "next/image";
-import { languages, levels, maximumParticipants } from "@/consts";
+import { languages, levels, participantOptions } from "@/consts";
 import { createSpeakingRoomValidation } from "@/validations";
 
 const Transition = React.forwardRef(function Transition(
@@ -87,7 +87,7 @@ const CreateSpeakingRoom = React.memo(() => {
             />
             <CommonSelect
               disabled
-              options={maximumParticipants}
+              options={participantOptions}
               value={values.maximumParticipant}
               onChange={(_event, value) =>
                 onChangeValue(value, "maximumParticipant")
