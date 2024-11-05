@@ -7,7 +7,7 @@ import {
   MenuItem,
   Tooltip,
 } from "@mui/material";
-import React, { Fragment } from "react";
+import React, { Fragment, startTransition } from "react";
 import NextImage from "next/image";
 import { Logout, Settings } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,11 @@ import NightlightTwoToneIcon from "@mui/icons-material/NightlightTwoTone";
 import IconButton from "@mui/material/IconButton";
 import { signIn, useSession } from "next-auth/react";
 import { Button } from "@mui/material";
-import { useMounted } from "../../hook";
+import { useMounted } from "../../hooks";
+import { defaultLocale, Locale } from "@/i18n/config";
+import { setUserLocale } from "@/services/locale";
+import { useLocale } from "next-intl";
+import clsx from "clsx";
 
 const UserSession = () => {
   const { data } = useSession();
@@ -111,13 +115,41 @@ const UserSession = () => {
 function MainHeader() {
   const mounted = useMounted();
   const { theme, setTheme } = useTheme();
+  const locale = useLocale();
+  function onChange(value: string) {
+    const locale = value as Locale;
+    startTransition(() => {
+      setUserLocale(locale);
+    });
+  }
+
   if (!mounted) return null;
+
   return (
     <header className="flex items-center justify-between gap-12 py-3 flex-grow max-w-[1400px]">
       <div className="font-bold text-3xl bg-gradient-to-r from-blue-400 to-violet-900 text-transparent bg-clip-text hover:cursor-pointer">
         Cam's English
       </div>
       <div className="flex items-center gap-3">
+        {locale === defaultLocale ? (
+          <NextImage
+            src={"https://flagcdn.com/w80/vn.png"}
+            alt={"vietnamese"}
+            width={20}
+            height={15}
+            className={clsx("cursor-pointer")}
+            onClick={() => onChange("vn")}
+          />
+        ) : (
+          <NextImage
+            src={"https://flagcdn.com/w80/gb.png"}
+            alt={"english"}
+            width={20}
+            height={15}
+            className={clsx("cursor-pointer")}
+            onClick={() => onChange("en")}
+          />
+        )}
         <IconButton
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           color="inherit"

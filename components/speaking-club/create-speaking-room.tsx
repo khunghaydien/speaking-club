@@ -9,8 +9,8 @@ import { useFormik } from "formik";
 import CommonInput from "@/components/input/common-input";
 import CommonSelect from "@/components/input/common-select";
 import NextImage from "next/image";
-import { languages, levels, maximumParticipants } from "@/const";
-import { createSpeakingRoomValidation } from "@/validation";
+import { languages, levels, maximumParticipants } from "@/consts";
+import { createSpeakingRoomValidation } from "@/validations";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {

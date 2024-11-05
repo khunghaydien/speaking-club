@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import MUIProvider from "@/provider/mui-provider";
+import MUIProvider from "@/providers/mui-provider";
 import { ThemeProvider } from "next-themes";
 import { getServerSession } from "next-auth/next";
-import SessionProvider from "@/provider/session-provider";
+import SessionProvider from "@/providers/session-provider";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,9 +31,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession();
-
+  const locale = await getLocale();
+  const messages = await getMessages();
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang={locale} suppressHydrationWarning={true}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-muted-foreground/10 text-black dark:text-white`}
       >
@@ -42,7 +45,11 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <MUIProvider>{children}</MUIProvider>
+            <MUIProvider>
+              <NextIntlClientProvider messages={messages}>
+                {children}
+              </NextIntlClientProvider>
+            </MUIProvider>
           </ThemeProvider>
         </SessionProvider>
       </body>

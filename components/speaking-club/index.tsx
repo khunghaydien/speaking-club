@@ -6,8 +6,10 @@ import Search from "@mui/icons-material/Search";
 import Link from "next/link";
 import { useFormik } from "formik";
 import CreateSpeakingRoom from "./create-speaking-room";
+import { useTranslations } from "next-intl";
 
 function SpeakingClub() {
+  const t = useTranslations("HomePage");
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -49,7 +51,7 @@ function SpeakingClub() {
         </div>
         <ScrollArea style={{ height: "calc(100vh - 177px)" }} className="pr-6">
           <Link className="card" href={`/speaking-club/${1}`} passHref>
-            Speaking Club
+            {t("title")}
           </Link>
         </ScrollArea>
       </div>
