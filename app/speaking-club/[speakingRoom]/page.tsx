@@ -1,7 +1,7 @@
 import { Box, CircularProgress } from "@mui/material";
 import dynamic from "next/dynamic";
-const WebrtcSpeakingRoom = dynamic(
-  () => import("@/components/speaking-club/webrtc-speaking-room"),
+const SpeakingRoom = dynamic(
+  () => import("@/components/speaking-club/webrtc-speaking-room/speaking-room"),
   {
     ssr: false,
     loading: () => (
@@ -13,7 +13,7 @@ const WebrtcSpeakingRoom = dynamic(
 );
 
 function page() {
-  return <WebrtcSpeakingRoom />;
+  return <SpeakingRoom />;
 }
 
 export default page;
