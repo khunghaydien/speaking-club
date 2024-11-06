@@ -9,8 +9,11 @@ import { useFormik } from "formik";
 import CommonInput from "@/components/input/common-input";
 import CommonSelect from "@/components/input/common-select";
 import NextImage from "next/image";
-import { languages, levels, participantOptions } from "@/consts";
+import { useGenerateOption } from "@/consts";
 import { createSpeakingRoomValidation } from "@/validations";
+import { useMutation } from "@apollo/client";
+import { CREATE_SPEAKING_ROOM } from "@/graphql/mutation/speaking-club";
+import { scrollToFirstElement } from "@/services";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -22,6 +25,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 const CreateSpeakingRoom = React.memo(() => {
+  const { levelOptions, typeOptions, languageOptions } = useGenerateOption();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -37,10 +41,15 @@ const CreateSpeakingRoom = React.memo(() => {
       name: "",
       language: null,
       level: null,
-      maximumParticipant: null,
+      type: null,
     },
     validationSchema: createSpeakingRoomValidation,
-    onSubmit: () => {},
+    onSubmit: (values) => {
+      setTimeout(() => {
+        scrollToFirstElement("error-message-scroll");
+      });
+      handleSubmit(values);
+    },
   });
 
   const { values, setFieldValue, errors, touched } = formik;
@@ -49,9 +58,22 @@ const CreateSpeakingRoom = React.memo(() => {
     setFieldValue(keyname, value);
   };
 
-  React.useEffect(() => {
-    setFieldValue("maximumParticipant", { label: "1", value: 1 });
-  }, []);
+  const [createSpeakingRoom] = useMutation(CREATE_SPEAKING_ROOM);
+
+  const handleSubmit = async (values: any) => {
+    try {
+      await createSpeakingRoom({
+        variables: {
+          createSpeakingRoomDto: {
+            name: values.name,
+            level: values.level.value,
+            language: values.language.value,
+            type: values.type.value,
+          },
+        },
+      });
+    } catch (error) {}
+  };
 
   return (
     <React.Fragment>
@@ -82,24 +104,19 @@ const CreateSpeakingRoom = React.memo(() => {
               label="Name"
               value={values.name}
               error={!!errors.name && !!touched.name}
-              helperText={!!errors.name && !!touched.name && errors.name}
+              helperText={
+                !!errors.name && !!touched.name && (errors.name as string)
+              }
               onChange={(e) => onChangeValue(e.target.value, "name")}
             />
             <CommonSelect
-              disabled
-              options={participantOptions}
-              value={values.maximumParticipant}
-              onChange={(_event, value) =>
-                onChangeValue(value, "maximumParticipant")
-              }
+              options={typeOptions}
+              value={values.type}
+              onChange={(_event, value) => onChangeValue(value, "type")}
               label="Maximum Participant"
-              error={
-                !!errors.maximumParticipant && !!touched.maximumParticipant
-              }
+              error={!!errors.type && !!touched.type}
               helperText={
-                !!errors.maximumParticipant &&
-                !!touched.maximumParticipant &&
-                errors.maximumParticipant
+                !!errors.type && !!touched.type && (errors.type as string)
               }
             />
           </div>
@@ -108,9 +125,11 @@ const CreateSpeakingRoom = React.memo(() => {
               label="Language"
               error={!!errors.language && !!touched.language}
               helperText={
-                !!errors.language && !!touched.language && errors.language
+                !!errors.language &&
+                !!touched.language &&
+                (errors.language as string)
               }
-              options={languages}
+              options={languageOptions}
               value={values.language}
               onChange={(_event, value) => setFieldValue("language", value)}
               renderOption={(props, option) => {
@@ -139,11 +158,13 @@ const CreateSpeakingRoom = React.memo(() => {
             />
             <CommonSelect
               label="Level"
-              options={levels}
+              options={levelOptions}
               value={values.level}
               onChange={(_event, value) => onChangeValue(value, "level")}
               error={!!errors.level && !!touched.level}
-              helperText={!!errors.level && !!touched.level && errors.level}
+              helperText={
+                !!errors.level && !!touched.level && (errors.level as string)
+              }
             />
           </div>
           <div className="flex items-center justify-end gap-3">

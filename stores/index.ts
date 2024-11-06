@@ -1,4 +1,5 @@
 
+import userReducer from '@/reducers/user.reducer'
 import {
     Action,
     combineReducers,
@@ -7,6 +8,7 @@ import {
 } from '@reduxjs/toolkit'
 
 const rootReducer = combineReducers({
+    user: userReducer,
 })
 
 export const store = configureStore({

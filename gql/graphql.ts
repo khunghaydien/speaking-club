@@ -109,6 +109,13 @@ export type CreateQuestionDto = {
   question: Scalars['String']['input'];
 };
 
+export type CreateSpeakingRoomDto = {
+  language: Scalars['String']['input'];
+  level: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+};
+
 export type ErrorType = {
   __typename?: 'ErrorType';
   code?: Maybe<Scalars['String']['output']>;
@@ -245,6 +252,7 @@ export type Mutation = {
   createExercise?: Maybe<Exercise>;
   createMessage?: Maybe<Message>;
   createPost?: Maybe<Post>;
+  createSpeakingRoom?: Maybe<SpeakingRoom>;
   deleteChapter?: Maybe<Chapter>;
   deleteExercise?: Maybe<Exercise>;
   deleteQuestion?: Maybe<Question>;
@@ -288,6 +296,11 @@ export type MutationCreateMessageArgs = {
 
 export type MutationCreatePostArgs = {
   createPostDto: CreatePostDto;
+};
+
+
+export type MutationCreateSpeakingRoomArgs = {
+  createSpeakingRoomDto: CreateSpeakingRoomDto;
 };
 
 
@@ -561,6 +574,20 @@ export type SignalingMessage = {
   type: Scalars['String']['output'];
 };
 
+export type SpeakingRoom = {
+  __typename?: 'SpeakingRoom';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  host?: Maybe<User>;
+  hostId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  language?: Maybe<Scalars['String']['output']>;
+  level?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userSpeakingRoom?: Maybe<Array<UserSpeakingRoom>>;
+};
+
 export type SpecificUser = {
   __typename?: 'SpecificUser';
   id: Scalars['String']['output'];
@@ -647,6 +674,15 @@ export type UserChat = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   user?: Maybe<User>;
   userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type UserSpeakingRoom = {
+  __typename?: 'UserSpeakingRoom';
+  id: Scalars['String']['output'];
+  participant?: Maybe<User>;
+  participantId?: Maybe<Scalars['String']['output']>;
+  speakingRoom?: Maybe<SpeakingRoom>;
+  speakingRoomId?: Maybe<Scalars['String']['output']>;
 };
 
 export type Users = {
@@ -763,6 +799,13 @@ export type CreateQuestionDto = {
   question: Scalars['String']['input'];
 };
 
+export type CreateSpeakingRoomDto = {
+  language: Scalars['String']['input'];
+  level: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+};
+
 export type ErrorType = {
   __typename?: 'ErrorType';
   code?: Maybe<Scalars['String']['output']>;
@@ -899,6 +942,7 @@ export type Mutation = {
   createExercise?: Maybe<Exercise>;
   createMessage?: Maybe<Message>;
   createPost?: Maybe<Post>;
+  createSpeakingRoom?: Maybe<SpeakingRoom>;
   deleteChapter?: Maybe<Chapter>;
   deleteExercise?: Maybe<Exercise>;
   deleteQuestion?: Maybe<Question>;
@@ -942,6 +986,11 @@ export type MutationCreateMessageArgs = {
 
 export type MutationCreatePostArgs = {
   createPostDto: CreatePostDto;
+};
+
+
+export type MutationCreateSpeakingRoomArgs = {
+  createSpeakingRoomDto: CreateSpeakingRoomDto;
 };
 
 
@@ -1215,6 +1264,20 @@ export type SignalingMessage = {
   type: Scalars['String']['output'];
 };
 
+export type SpeakingRoom = {
+  __typename?: 'SpeakingRoom';
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  host?: Maybe<User>;
+  hostId?: Maybe<Scalars['String']['output']>;
+  id: Scalars['String']['output'];
+  language?: Maybe<Scalars['String']['output']>;
+  level?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  type?: Maybe<Scalars['String']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  userSpeakingRoom?: Maybe<Array<UserSpeakingRoom>>;
+};
+
 export type SpecificUser = {
   __typename?: 'SpecificUser';
   id: Scalars['String']['output'];
@@ -1301,6 +1364,15 @@ export type UserChat = {
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   user?: Maybe<User>;
   userId?: Maybe<Scalars['String']['output']>;
+};
+
+export type UserSpeakingRoom = {
+  __typename?: 'UserSpeakingRoom';
+  id: Scalars['String']['output'];
+  participant?: Maybe<User>;
+  participantId?: Maybe<Scalars['String']['output']>;
+  speakingRoom?: Maybe<SpeakingRoom>;
+  speakingRoomId?: Maybe<Scalars['String']['output']>;
 };
 
 export type Users = {

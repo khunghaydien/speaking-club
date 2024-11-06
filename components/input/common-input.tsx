@@ -55,7 +55,7 @@ const CommonInput = forwardRef<HTMLDivElement, TextFieldProps>(
           />
           {error && helperText && (
             <FormHelperText
-              className={"error-message"}
+              className={"error-message-scroll"}
               sx={{
                 margin: 0,
                 position: "absolute",
