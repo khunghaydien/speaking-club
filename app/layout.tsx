@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import ClientProvider from "@/providers/apollo-provider";
 import StoreProvider from "@/providers/store-provider";
+import { authOptions } from "@/consts";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,7 +33,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const locale = await getLocale();
   const messages = await getMessages();
   return (
