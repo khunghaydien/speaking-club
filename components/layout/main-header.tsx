@@ -34,6 +34,7 @@ const UserSession = () => {
     setAnchorEl(null);
   };
   const router = useRouter();
+
   return (
     <Fragment>
       {!data ? (

@@ -1,5 +1,7 @@
 /* eslint-disable */
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -7,6 +9,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -263,9 +266,9 @@ export type Mutation = {
   logout: Scalars['String']['output'];
   logoutAllDevices?: Maybe<Scalars['String']['output']>;
   refreshToken: Scalars['String']['output'];
-  register: Register;
   resetPassword: User;
   sendSignalingMessage: Scalars['Boolean']['output'];
+  signUp: User;
   updateChapter?: Maybe<Chapter>;
   updateExercise?: Maybe<Exercise>;
   updateUser: User;
@@ -344,11 +347,6 @@ export type MutationLogoutAllDevicesArgs = {
 };
 
 
-export type MutationRegisterArgs = {
-  registerInput: RegisterDto;
-};
-
-
 export type MutationResetPasswordArgs = {
   resetPasswordDto: ResetPasswordDto;
 };
@@ -357,6 +355,11 @@ export type MutationResetPasswordArgs = {
 export type MutationSendSignalingMessageArgs = {
   message: SignalingInput;
   peerId: Scalars['String']['input'];
+};
+
+
+export type MutationSignUpArgs = {
+  signUpDto: SignUpDto;
 };
 
 
@@ -522,18 +525,6 @@ export type Reaction = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type Register = {
-  __typename?: 'Register';
-  error?: Maybe<ErrorType>;
-  user?: Maybe<User>;
-};
-
-export type RegisterDto = {
-  email: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-};
-
 export type ResetPasswordDto = {
   password: Scalars['String']['input'];
   resetPasswordToken: Scalars['String']['input'];
@@ -559,6 +550,13 @@ export type Searchs = {
   __typename?: 'Searchs';
   pagination: Pagination;
   searchs: Array<Search>;
+};
+
+export type SignUpDto = {
+  email: Scalars['String']['input'];
+  image?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SignalingInput = {
@@ -697,6 +695,23 @@ export type VerifyUserDto = {
   name: Scalars['String']['input'];
 };
 
+export type SignUpMutationVariables = Exact<{
+  signUpDto: SignUpDto;
+}>;
+
+
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', id: string, name?: string | null, email?: string | null, image?: string | null } };
+
+export type CreateSpeakingRoomMutationVariables = Exact<{
+  createSpeakingRoomDto: CreateSpeakingRoomDto;
+}>;
+
+
+export type CreateSpeakingRoomMutation = { __typename?: 'Mutation', createSpeakingRoom?: { __typename?: 'SpeakingRoom', id: string, name?: string | null, level?: string | null, language?: string | null, hostId?: string | null } | null };
+
+
+export const SignUpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SignUp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"signUpDto"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignUpDto"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"signUp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"signUpDto"},"value":{"kind":"Variable","name":{"kind":"Name","value":"signUpDto"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]}}]} as unknown as DocumentNode<SignUpMutation, SignUpMutationVariables>;
+export const CreateSpeakingRoomDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateSpeakingRoom"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"createSpeakingRoomDto"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateSpeakingRoomDto"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSpeakingRoom"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"createSpeakingRoomDto"},"value":{"kind":"Variable","name":{"kind":"Name","value":"createSpeakingRoomDto"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"language"}},{"kind":"Field","name":{"kind":"Name","value":"hostId"}}]}}]}}]} as unknown as DocumentNode<CreateSpeakingRoomMutation, CreateSpeakingRoomMutationVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -953,9 +968,9 @@ export type Mutation = {
   logout: Scalars['String']['output'];
   logoutAllDevices?: Maybe<Scalars['String']['output']>;
   refreshToken: Scalars['String']['output'];
-  register: Register;
   resetPassword: User;
   sendSignalingMessage: Scalars['Boolean']['output'];
+  signUp: User;
   updateChapter?: Maybe<Chapter>;
   updateExercise?: Maybe<Exercise>;
   updateUser: User;
@@ -1034,11 +1049,6 @@ export type MutationLogoutAllDevicesArgs = {
 };
 
 
-export type MutationRegisterArgs = {
-  registerInput: RegisterDto;
-};
-
-
 export type MutationResetPasswordArgs = {
   resetPasswordDto: ResetPasswordDto;
 };
@@ -1047,6 +1057,11 @@ export type MutationResetPasswordArgs = {
 export type MutationSendSignalingMessageArgs = {
   message: SignalingInput;
   peerId: Scalars['String']['input'];
+};
+
+
+export type MutationSignUpArgs = {
+  signUpDto: SignUpDto;
 };
 
 
@@ -1212,18 +1227,6 @@ export type Reaction = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
-export type Register = {
-  __typename?: 'Register';
-  error?: Maybe<ErrorType>;
-  user?: Maybe<User>;
-};
-
-export type RegisterDto = {
-  email: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-  password: Scalars['String']['input'];
-};
-
 export type ResetPasswordDto = {
   password: Scalars['String']['input'];
   resetPasswordToken: Scalars['String']['input'];
@@ -1249,6 +1252,13 @@ export type Searchs = {
   __typename?: 'Searchs';
   pagination: Pagination;
   searchs: Array<Search>;
+};
+
+export type SignUpDto = {
+  email: Scalars['String']['input'];
+  image?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  password?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type SignalingInput = {
@@ -1386,3 +1396,92 @@ export type VerifyUserDto = {
   image: Scalars['String']['input'];
   name: Scalars['String']['input'];
 };
+
+export type SignUpMutationVariables = Exact<{
+  signUpDto: SignUpDto;
+}>;
+
+
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', id: string, name?: string | null, email?: string | null, image?: string | null } };
+
+export type CreateSpeakingRoomMutationVariables = Exact<{
+  createSpeakingRoomDto: CreateSpeakingRoomDto;
+}>;
+
+
+export type CreateSpeakingRoomMutation = { __typename?: 'Mutation', createSpeakingRoom?: { __typename?: 'SpeakingRoom', id: string, name?: string | null, level?: string | null, language?: string | null, hostId?: string | null } | null };
+
+
+export const SignUpDocument = gql`
+    mutation SignUp($signUpDto: SignUpDto!) {
+  signUp(signUpDto: $signUpDto) {
+    id
+    name
+    email
+    image
+  }
+}
+    `;
+export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
+
+/**
+ * __useSignUpMutation__
+ *
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
+ *   variables: {
+ *      signUpDto: // value for 'signUpDto'
+ *   },
+ * });
+ */
+export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
+      }
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const CreateSpeakingRoomDocument = gql`
+    mutation CreateSpeakingRoom($createSpeakingRoomDto: CreateSpeakingRoomDto!) {
+  createSpeakingRoom(createSpeakingRoomDto: $createSpeakingRoomDto) {
+    id
+    name
+    level
+    language
+    hostId
+  }
+}
+    `;
+export type CreateSpeakingRoomMutationFn = Apollo.MutationFunction<CreateSpeakingRoomMutation, CreateSpeakingRoomMutationVariables>;
+
+/**
+ * __useCreateSpeakingRoomMutation__
+ *
+ * To run a mutation, you first call `useCreateSpeakingRoomMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSpeakingRoomMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSpeakingRoomMutation, { data, loading, error }] = useCreateSpeakingRoomMutation({
+ *   variables: {
+ *      createSpeakingRoomDto: // value for 'createSpeakingRoomDto'
+ *   },
+ * });
+ */
+export function useCreateSpeakingRoomMutation(baseOptions?: Apollo.MutationHookOptions<CreateSpeakingRoomMutation, CreateSpeakingRoomMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateSpeakingRoomMutation, CreateSpeakingRoomMutationVariables>(CreateSpeakingRoomDocument, options);
+      }
+export type CreateSpeakingRoomMutationHookResult = ReturnType<typeof useCreateSpeakingRoomMutation>;
+export type CreateSpeakingRoomMutationResult = Apollo.MutationResult<CreateSpeakingRoomMutation>;
+export type CreateSpeakingRoomMutationOptions = Apollo.BaseMutationOptions<CreateSpeakingRoomMutation, CreateSpeakingRoomMutationVariables>;
