@@ -1,6 +1,26 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+declare module "next-auth" {
+    interface JWT {
+        sub?: string;
+        name?: string;
+        email?: string;
+        image?: string;
+        iat?: number;
+        exp?: number;
+        [key: string]: any;
+    }
+
+    interface Session {
+        user: {
+            name?: string;
+            email?: string;
+            image?: string;
+            id?: string;
+        };
+    }
+}
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -17,11 +37,15 @@ export const authOptions: NextAuthOptions = {
                 algorithm: "HS256",
             });
         },
+        decode: async ({ token, secret }) => {
+            if (!token) return null;
+            try {
+                return jwt.verify(token, secret, {
+                    algorithms: ["HS256"],
+                }) as JwtPayload;
+            } catch (error) {
+                return null;
+            }
+        },
     },
-    callbacks: {
-        async session({ session, user }) {
-            session.user = user
-            return session
-        }
-    }
 };
